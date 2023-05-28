@@ -22,13 +22,14 @@ const Nav = () => {
     <nav className="flex-between w-full mb-16 pt-3">
       <Link className="flex gap-2 flex-center" href="/">
         <Image
-          src={session?.user.image}
+          src="/assets/images/logo.svg"
           alt="promptopia logo"
           width={30}
           height={30}
         />
         <p className="logo_text">Promptopia</p>
       </Link>
+
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
@@ -40,7 +41,7 @@ const Nav = () => {
             </button>
             <Link href="/profile">
               <Image
-                src="/assets/images/profile.svg"
+                src={session.user.image}
                 height={37}
                 width={37}
                 className="rounded-full"
@@ -63,7 +64,6 @@ const Nav = () => {
           </>
         )}
       </div>
-
       {/* mobile nav */}
       <div className="sm:hidden flex relative">
         {session?.user ? (

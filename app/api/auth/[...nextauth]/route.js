@@ -5,7 +5,7 @@ import {
 } from "next-auth/providers/google";
 
 import User from "@models/user";
-import { connectToDB } from "/utils/database";
+import { connectToDB } from "@utils/database";
 // * serverless functions because Next.js route
 
 const handler = NextAuth({
@@ -15,33 +15,34 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session }) {
+      const sessionUser = await User.findOne({
+        email: session.user.email,
+      });
 
-  async session({ session }) {
-    const sessionUser = await User.findOne({
-      email: session.user.email,
-    });
+      session.user.id = sessionUser._id.toString();
 
-    session.user.id = sessionUser._id.toString();
+      return session;
+    },
 
-    return session;
-  },
+    async signIn({ profile }) {
+      try {
+        await connectToDB();
+        const userExists = await User.findOne({ email: profile.email });
 
-  async signIn({ profile }) {
-    try {
-      await connectToDB();
-      const userExists = await User.findOne({ email: profile.email });
-
-      if (!userExists) {
-        await User.create({
-          email: profile.email,
-          username: profile.name.replace(" ", ""),
-        });
+        if (!userExists) {
+          await User.create({
+            email: profile.email,
+            username: profile.name.replace(" ", ""),
+          });
+        }
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
       }
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+    },
   },
 });
 
