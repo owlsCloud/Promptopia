@@ -45,6 +45,7 @@ const Nav = () => {
                 height={37}
                 width={37}
                 className="rounded-full"
+                alt="image"
               />
             </Link>
           </div>
@@ -54,7 +55,7 @@ const Nav = () => {
               Object.values(providers).map((provider) => (
                 <button
                   type="button"
-                  ket={provider.name}
+                  key={provider.name}
                   onClick={() => signIn(provider.id)}
                   className="black_btn"
                 >
@@ -73,6 +74,7 @@ const Nav = () => {
               height={37}
               width={37}
               className="rounded-full"
+              alt="image"
               onClick={() => {
                 setToggleDropDown((prev) => !prev);
               }}
@@ -112,7 +114,7 @@ const Nav = () => {
               Object.values(providers).map((provider) => (
                 <button
                   type="button"
-                  ket={provider.name}
+                  key={provider.name}
                   onClick={() => signIn(provider.id)}
                   className="black_btn"
                 >
